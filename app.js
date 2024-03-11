@@ -11,17 +11,17 @@ app.use(cors())
 
 app.use(express.json())
 
-app.get('/api/topics', getTopics)
-
 app.get('/api', getEndpoints)
 
-app.get('/api/articles/:article_id', getArticleById)
+app.get('/api/users', getUsers)
+
+app.get('/api/topics', getTopics)
 
 app.get('/api/articles', getArticles)
 
-app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
+app.get('/api/articles/:article_id', getArticleById)
 
-app.get('/api/users', getUsers)
+app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 
 app.post('/api/articles/:article_id/comments', postComment)
 

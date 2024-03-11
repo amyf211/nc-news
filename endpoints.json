@@ -2,6 +2,15 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
+
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "users": [{ "username": "icellusedkars", "name": "sam" }]
+    }
+  },
+
   "GET /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
@@ -9,6 +18,7 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+
   "GET /api/articles": {
     "description": "serves an array of all articles",
     "queries": ["author", "topic", "sort_by", "order"],
@@ -26,13 +36,7 @@
       ]
     }
   },
-  "GET /api/users": {
-    "description": "serves an array of all users",
-    "queries": [],
-    "exampleResponse": {
-      "users": [{ "username": "icellusedkars", "name": "sam" }]
-    }
-  },
+
   "GET /api/articles/:article_id": {
     "description": "serves an article with the corresponding ID",
     "queries": [],
@@ -50,6 +54,7 @@
       ]
     }
   },
+
   "GET /api/articles/:article_id/comments": {
     "description": "serves an array of comments",
     "queries": [],
@@ -65,5 +70,37 @@
         }
       ]
     }
+  },
+
+  "POST /api/articles/:article_id/comments": {
+    "description": "posts a new comment",
+    "queries": [],
+    "exampleResponse": {
+      "comment": [
+        {
+          "comment_id": 10,
+          "votes": 0,
+          "created_at": "2020-07-09T20:11:00.000Z",
+          "author": "butter_bridge",
+          "body": "great article!",
+          "article_id": 10
+        }
+      ]
+    }
+  },
+
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a comment",
+    "queries": []
+  },
+
+  "PATCH /api/articles/:article_id": {
+    "description": "updates the votes on an article",
+    "queries": [],
+    "exampleResponse": {
+      "votes": 110
+    }
   }
+
 }
+
