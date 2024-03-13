@@ -10,23 +10,33 @@ function selectArticleById(articleId){
     });
 };
 
-function selectArticles(){
-    return db.query(`SELECT articles.author, title, articles.article_id, articles.topic, articles.created_at, articles.votes, article_img_url,
-    CAST(COUNT (comments.article_id) AS INT)
-    AS comment_count
-    FROM articles
-    LEFT JOIN comments
-    ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id
-    ORDER BY articles.created_at DESC;`)
-    .then((result) => {
-    return result.rows
+function selectArticles(topic) {
+    const queryVals = [];
+
+    let sqlString = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, 
+    CAST(COUNT (comments.article_id) AS INT) AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON articles.article_id = comments.article_id`;
+
+    if (topic) {
+        sqlString += ` WHERE topic = $1`;
+        queryVals.push(topic);
     }
-)};
+
+    sqlString += ` GROUP BY articles.article_id 
+        ORDER BY articles.created_at DESC;`;
+
+    return db.query(sqlString, queryVals)
+        .then((result) => {
+            if (result.rows.length === 0) {
+                return Promise.reject({ status: 404, msg: 'not found' });
+            }
+            return result.rows;
+        })
+};
 
 function editVotes(articleId, newVotes) {
-    console.log(articleId)
-    console.log(newVotes)
     return db.query(`UPDATE articles
                      SET votes = votes + $1
                      WHERE article_id = $2
@@ -35,7 +45,6 @@ function editVotes(articleId, newVotes) {
             if(response.rows.length === 0){
                 return Promise.reject({status: 404, msg: "Not Found"})
             }
-            console.log(response)
             return response.rows[0]
         })
     }

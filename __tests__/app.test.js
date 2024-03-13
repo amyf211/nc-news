@@ -109,13 +109,17 @@ describe('GET /api/articles', () => {
                 })
             })
         });
-        // test('should be sorted by date created in descending order', () => {
-        //     return request(app)
-        //     .get('/api/articles')
-        //     .expect(200).then((response) => {
-                
-        //     })
-        // });
+        test('should return 200 status code and only articles of the given topic', () => {
+            return request(app)
+            .get('/api/articles?topic=mitch')
+            .expect(200).then((response)=>{
+            const articles = response.body
+    
+            articles.forEach((article) => {
+                expect(article.topic).toBe('mitch')
+            })
+            })
+        });
  });
 
 describe('GET /api/articles/:article_id/comments', () => {
@@ -245,7 +249,6 @@ describe('PATCH /api/articles/:article_id', () => {
         })
         .expect(200)
         .then((response) => {
-            console.log(response.body, "<<<response")
             expect(response.body.votes).toBe(110)
         });
     });
